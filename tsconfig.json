@@ -18,7 +18,9 @@
     "jsxFactory": "h",
     "jsxFragmentFactory": "h.Fragment",
     "types": [
-      "@stencil/vitest/globals"
+      "@stencil/vitest/globals",
+      "jest",
+      "node"
     ]
   },
   "include": [
@@ -26,11 +28,5 @@
   ],
   "exclude": [
     "node_modules"
-  ],
-  "compilerOptions": {
-    "types": [
-      "jest",
-      "node"
-    ]
-  }
+  ]
 }

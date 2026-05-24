@@ -1,8 +1,5 @@
 import { Component, Host, h, State } from '@stencil/core';
-import '@material/web/list/list'
-import '@material/web/list/list-item'
-import '@material/web/icon/icon'
-import '@material/web/button/filled-button'
+
 
 @Component({
   tag: 'incident-list',
