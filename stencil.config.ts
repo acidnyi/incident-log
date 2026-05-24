@@ -2,7 +2,7 @@ import { Config } from '@stencil/core';
 
 export const config: Config = {
   namespace: 'incident-log',
-  globalScript: 'scr/global/app.ts',
+  globalScript: 'src/global/app.ts',
   outputTargets: [
     {
       type: 'dist',
