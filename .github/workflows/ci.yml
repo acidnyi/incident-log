@@ -50,7 +50,7 @@ jobs:
       uses: docker/metadata-action@v3
       with:
         images: |
-          ergese/ambulance-ufe
+          ergese/incident-log
         tags: |
           type=schedule
           type=ref,event=branch
