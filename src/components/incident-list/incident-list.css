@@ -99,3 +99,9 @@ md-filled-tonal-button {
   font-weight: 900;
   text-align: center;
 }
+
+.list-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}

@@ -22,6 +22,23 @@ import {
     IncidentToJSON,
 } from '../models';
 
+export interface CreateIncidentRequest {
+    incident: Incident;
+}
+
+export interface DeleteIncidentRequest {
+    incidentId: string;
+}
+
+export interface GetIncidentRequest {
+    incidentId: string;
+}
+
+export interface UpdateIncidentRequest {
+    incidentId: string;
+    incident: Incident;
+}
+
 /**
  * IncidentLogApi - interface
  * 
@@ -29,6 +46,54 @@ import {
  * @interface IncidentLogApiInterface
  */
 export interface IncidentLogApiInterface {
+    /**
+     * Use this method to store new incident report.
+     * @summary Saves new incident
+     * @param {Incident} incident Incident report to store
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof IncidentLogApiInterface
+     */
+    createIncidentRaw(requestParameters: CreateIncidentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Incident>>;
+
+    /**
+     * Use this method to store new incident report.
+     * Saves new incident
+     */
+    createIncident(requestParameters: CreateIncidentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Incident>;
+
+    /**
+     * Deletes specific incident report.
+     * @summary Deletes specific incident
+     * @param {string} incidentId ID of the incident
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof IncidentLogApiInterface
+     */
+    deleteIncidentRaw(requestParameters: DeleteIncidentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>>;
+
+    /**
+     * Deletes specific incident report.
+     * Deletes specific incident
+     */
+    deleteIncident(requestParameters: DeleteIncidentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void>;
+
+    /**
+     * Returns detail of one incident report.
+     * @summary Provides details about incident
+     * @param {string} incidentId ID of the incident
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof IncidentLogApiInterface
+     */
+    getIncidentRaw(requestParameters: GetIncidentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Incident>>;
+
+    /**
+     * Returns detail of one incident report.
+     * Provides details about incident
+     */
+    getIncident(requestParameters: GetIncidentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Incident>;
+
     /**
      * Returns current and historical incident reports
      * @summary Provides the list of incidents
@@ -44,12 +109,127 @@ export interface IncidentLogApiInterface {
      */
     getIncidents(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Incident>>;
 
+    /**
+     * Updates content of the incident report.
+     * @summary Updates specific incident
+     * @param {string} incidentId ID of the incident
+     * @param {Incident} incident Incident report to update
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof IncidentLogApiInterface
+     */
+    updateIncidentRaw(requestParameters: UpdateIncidentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Incident>>;
+
+    /**
+     * Updates content of the incident report.
+     * Updates specific incident
+     */
+    updateIncident(requestParameters: UpdateIncidentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Incident>;
+
 }
 
 /**
  * 
  */
 export class IncidentLogApi extends runtime.BaseAPI implements IncidentLogApiInterface {
+
+    /**
+     * Use this method to store new incident report.
+     * Saves new incident
+     */
+    async createIncidentRaw(requestParameters: CreateIncidentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Incident>> {
+        if (requestParameters.incident === null || requestParameters.incident === undefined) {
+            throw new runtime.RequiredError('incident','Required parameter requestParameters.incident was null or undefined when calling createIncident.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/incidents`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: IncidentToJSON(requestParameters.incident),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => IncidentFromJSON(jsonValue));
+    }
+
+    /**
+     * Use this method to store new incident report.
+     * Saves new incident
+     */
+    async createIncident(requestParameters: CreateIncidentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Incident> {
+        const response = await this.createIncidentRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Deletes specific incident report.
+     * Deletes specific incident
+     */
+    async deleteIncidentRaw(requestParameters: DeleteIncidentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.incidentId === null || requestParameters.incidentId === undefined) {
+            throw new runtime.RequiredError('incidentId','Required parameter requestParameters.incidentId was null or undefined when calling deleteIncident.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/incidents/{incidentId}`.replace(`{${"incidentId"}}`, encodeURIComponent(String(requestParameters.incidentId))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Deletes specific incident report.
+     * Deletes specific incident
+     */
+    async deleteIncident(requestParameters: DeleteIncidentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.deleteIncidentRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Returns detail of one incident report.
+     * Provides details about incident
+     */
+    async getIncidentRaw(requestParameters: GetIncidentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Incident>> {
+        if (requestParameters.incidentId === null || requestParameters.incidentId === undefined) {
+            throw new runtime.RequiredError('incidentId','Required parameter requestParameters.incidentId was null or undefined when calling getIncident.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/incidents/{incidentId}`.replace(`{${"incidentId"}}`, encodeURIComponent(String(requestParameters.incidentId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => IncidentFromJSON(jsonValue));
+    }
+
+    /**
+     * Returns detail of one incident report.
+     * Provides details about incident
+     */
+    async getIncident(requestParameters: GetIncidentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Incident> {
+        const response = await this.getIncidentRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
 
     /**
      * Returns current and historical incident reports
@@ -76,6 +256,45 @@ export class IncidentLogApi extends runtime.BaseAPI implements IncidentLogApiInt
      */
     async getIncidents(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Incident>> {
         const response = await this.getIncidentsRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Updates content of the incident report.
+     * Updates specific incident
+     */
+    async updateIncidentRaw(requestParameters: UpdateIncidentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Incident>> {
+        if (requestParameters.incidentId === null || requestParameters.incidentId === undefined) {
+            throw new runtime.RequiredError('incidentId','Required parameter requestParameters.incidentId was null or undefined when calling updateIncident.');
+        }
+
+        if (requestParameters.incident === null || requestParameters.incident === undefined) {
+            throw new runtime.RequiredError('incident','Required parameter requestParameters.incident was null or undefined when calling updateIncident.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/incidents/{incidentId}`.replace(`{${"incidentId"}}`, encodeURIComponent(String(requestParameters.incidentId))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: IncidentToJSON(requestParameters.incident),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => IncidentFromJSON(jsonValue));
+    }
+
+    /**
+     * Updates content of the incident report.
+     * Updates specific incident
+     */
+    async updateIncident(requestParameters: UpdateIncidentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Incident> {
+        const response = await this.updateIncidentRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

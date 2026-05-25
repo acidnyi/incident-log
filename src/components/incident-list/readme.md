@@ -14,9 +14,10 @@
 
 ## Events
 
-| Event           | Description | Type                  |
-| --------------- | ----------- | --------------------- |
-| `entry-clicked` |             | `CustomEvent<string>` |
+| Event               | Description | Type                  |
+| ------------------- | ----------- | --------------------- |
+| `entry-clicked`     |             | `CustomEvent<string>` |
+| `new-entry-clicked` |             | `CustomEvent<void>`   |
 
 
 ## Dependencies

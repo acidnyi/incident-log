@@ -1,8 +1,10 @@
 apis/IncidentLogApi.ts
+apis/IncidentTypesApi.ts
 apis/index.ts
 index.ts
 models/Incident.ts
 models/IncidentSeverity.ts
 models/IncidentStatus.ts
+models/IncidentType.ts
 models/index.ts
 runtime.ts

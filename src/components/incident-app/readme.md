@@ -7,10 +7,10 @@
 
 ## Properties
 
-| Property   | Attribute   | Description | Type     | Default     |
-| ---------- | ----------- | ----------- | -------- | ----------- |
-| `apiBase`  | `api-base`  |             | `string` | `undefined` |
-| `basePath` | `base-path` |             | `string` | `''`        |
+| Property               | Attribute   | Description | Type     | Default     |
+| ---------------------- | ----------- | ----------- | -------- | ----------- |
+| `apiBase` _(required)_ | `api-base`  |             | `string` | `undefined` |
+| `basePath`             | `base-path` |             | `string` | `''`        |
 
 
 ## Dependencies

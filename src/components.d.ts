@@ -61,6 +61,7 @@ declare global {
     };
     interface HTMLIncidentListElementEventMap {
         "entry-clicked": string;
+        "new-entry-clicked": void;
     }
     interface HTMLIncidentListElement extends Components.IncidentList, HTMLStencilElement {
         addEventListener<K extends keyof HTMLIncidentListElementEventMap>(type: K, listener: (this: HTMLIncidentListElement, ev: IncidentListCustomEvent<HTMLIncidentListElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -86,7 +87,7 @@ declare namespace LocalJSX {
     type OneOf<K extends string, PropT, AttrT = PropT> = { [P in K]: PropT } & { [P in `attr:${K}` | `prop:${K}`]?: never } | { [P in `attr:${K}`]: AttrT } & { [P in K | `prop:${K}`]?: never } | { [P in `prop:${K}`]: PropT } & { [P in K | `attr:${K}`]?: never };
 
     interface IncidentApp {
-        "apiBase"?: string;
+        "apiBase": string;
         /**
           * @default ''
          */
@@ -106,6 +107,7 @@ declare namespace LocalJSX {
          */
         "apiBase"?: string;
         "onEntry-clicked"?: (event: IncidentListCustomEvent<string>) => void;
+        "onNew-entry-clicked"?: (event: IncidentListCustomEvent<void>) => void;
     }
 
     interface IncidentAppAttributes {
@@ -121,7 +123,7 @@ declare namespace LocalJSX {
     }
 
     interface IntrinsicElements {
-        "incident-app": Omit<IncidentApp, keyof IncidentAppAttributes> & { [K in keyof IncidentApp & keyof IncidentAppAttributes]?: IncidentApp[K] } & { [K in keyof IncidentApp & keyof IncidentAppAttributes as `attr:${K}`]?: IncidentAppAttributes[K] } & { [K in keyof IncidentApp & keyof IncidentAppAttributes as `prop:${K}`]?: IncidentApp[K] };
+        "incident-app": Omit<IncidentApp, keyof IncidentAppAttributes> & { [K in keyof IncidentApp & keyof IncidentAppAttributes]?: IncidentApp[K] } & { [K in keyof IncidentApp & keyof IncidentAppAttributes as `attr:${K}`]?: IncidentAppAttributes[K] } & { [K in keyof IncidentApp & keyof IncidentAppAttributes as `prop:${K}`]?: IncidentApp[K] } & OneOf<"apiBase", IncidentApp["apiBase"], IncidentAppAttributes["apiBase"]>;
         "incident-editor": Omit<IncidentEditor, keyof IncidentEditorAttributes> & { [K in keyof IncidentEditor & keyof IncidentEditorAttributes]?: IncidentEditor[K] } & { [K in keyof IncidentEditor & keyof IncidentEditorAttributes as `attr:${K}`]?: IncidentEditorAttributes[K] } & { [K in keyof IncidentEditor & keyof IncidentEditorAttributes as `prop:${K}`]?: IncidentEditor[K] } & OneOf<"entryId", IncidentEditor["entryId"], IncidentEditorAttributes["entryId"]>;
         "incident-list": Omit<IncidentList, keyof IncidentListAttributes> & { [K in keyof IncidentList & keyof IncidentListAttributes]?: IncidentList[K] } & { [K in keyof IncidentList & keyof IncidentListAttributes as `attr:${K}`]?: IncidentListAttributes[K] } & { [K in keyof IncidentList & keyof IncidentListAttributes as `prop:${K}`]?: IncidentList[K] };
     }

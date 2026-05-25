@@ -15,7 +15,7 @@ export class IncidentApp {
   @State() private relativePath = '';
 
   @Prop() basePath: string = '';
-  @Prop() apiBase: string;
+  @Prop() apiBase!: string;
 
   componentWillLoad() {
     const baseUri = new URL(this.basePath, document.baseURI || '/').pathname;
@@ -72,6 +72,7 @@ export class IncidentApp {
             onentry-clicked={(ev: CustomEvent<string>) =>
               navigate('entry/' + ev.detail)
             }
+            onnew-entry-clicked={() => navigate('entry/@new')}
           ></incident-list>
         )}
       </Host>

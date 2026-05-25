@@ -70,3 +70,12 @@ md-divider {
     flex-wrap: wrap;
   }
 }
+
+
+.error {
+  margin: auto;
+  color: red;
+  font-size: 2rem;
+  font-weight: 900;
+  text-align: center;
+}

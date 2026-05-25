@@ -10,6 +10,9 @@ export class IncidentList {
   @Event({ eventName: 'entry-clicked' })
   entryClicked!: EventEmitter<string>;
 
+  @Event({ eventName: 'new-entry-clicked' })
+  newEntryClicked!: EventEmitter<void>;
+
   @Prop() apiBase: string = '/api';
 
   @State() incidents: Incident[] = [];
@@ -49,6 +52,14 @@ export class IncidentList {
     return (
       <Host>
         <h2>Hlásenie incidentov a bezpečnostných udalostí</h2>
+
+        <div class="list-actions">
+          <md-filled-button onClick={() => this.newEntryClicked.emit()}>
+            <md-icon slot="icon">add</md-icon>
+            Nový incident
+          </md-filled-button>
+        </div>
+
 
         {this.errorMessage ? (
           <div class="error">{this.errorMessage}</div>
