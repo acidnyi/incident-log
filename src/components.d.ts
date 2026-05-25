@@ -6,24 +6,100 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
+    interface IncidentApp {
+        /**
+          * @default ''
+         */
+        "basePath": string;
+    }
+    interface IncidentEditor {
+        "entryId": string;
+    }
     interface IncidentList {
     }
 }
+export interface IncidentEditorCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIncidentEditorElement;
+}
+export interface IncidentListCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIncidentListElement;
+}
 declare global {
+    interface HTMLIncidentAppElement extends Components.IncidentApp, HTMLStencilElement {
+    }
+    var HTMLIncidentAppElement: {
+        prototype: HTMLIncidentAppElement;
+        new (): HTMLIncidentAppElement;
+    };
+    interface HTMLIncidentEditorElementEventMap {
+        "editor-closed": string;
+    }
+    interface HTMLIncidentEditorElement extends Components.IncidentEditor, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIncidentEditorElementEventMap>(type: K, listener: (this: HTMLIncidentEditorElement, ev: IncidentEditorCustomEvent<HTMLIncidentEditorElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIncidentEditorElementEventMap>(type: K, listener: (this: HTMLIncidentEditorElement, ev: IncidentEditorCustomEvent<HTMLIncidentEditorElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIncidentEditorElement: {
+        prototype: HTMLIncidentEditorElement;
+        new (): HTMLIncidentEditorElement;
+    };
+    interface HTMLIncidentListElementEventMap {
+        "entry-clicked": string;
+    }
     interface HTMLIncidentListElement extends Components.IncidentList, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIncidentListElementEventMap>(type: K, listener: (this: HTMLIncidentListElement, ev: IncidentListCustomEvent<HTMLIncidentListElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIncidentListElementEventMap>(type: K, listener: (this: HTMLIncidentListElement, ev: IncidentListCustomEvent<HTMLIncidentListElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLIncidentListElement: {
         prototype: HTMLIncidentListElement;
         new (): HTMLIncidentListElement;
     };
     interface HTMLElementTagNameMap {
+        "incident-app": HTMLIncidentAppElement;
+        "incident-editor": HTMLIncidentEditorElement;
         "incident-list": HTMLIncidentListElement;
     }
 }
 declare namespace LocalJSX {
-    interface IncidentList {
+    type OneOf<K extends string, PropT, AttrT = PropT> = { [P in K]: PropT } & { [P in `attr:${K}` | `prop:${K}`]?: never } | { [P in `attr:${K}`]: AttrT } & { [P in K | `prop:${K}`]?: never } | { [P in `prop:${K}`]: PropT } & { [P in K | `attr:${K}`]?: never };
+
+    interface IncidentApp {
+        /**
+          * @default ''
+         */
+        "basePath"?: string;
     }
+    interface IncidentEditor {
+        "entryId": string;
+        "onEditor-closed"?: (event: IncidentEditorCustomEvent<string>) => void;
+    }
+    interface IncidentList {
+        "onEntry-clicked"?: (event: IncidentListCustomEvent<string>) => void;
+    }
+
+    interface IncidentAppAttributes {
+        "basePath": string;
+    }
+    interface IncidentEditorAttributes {
+        "entryId": string;
+    }
+
     interface IntrinsicElements {
+        "incident-app": Omit<IncidentApp, keyof IncidentAppAttributes> & { [K in keyof IncidentApp & keyof IncidentAppAttributes]?: IncidentApp[K] } & { [K in keyof IncidentApp & keyof IncidentAppAttributes as `attr:${K}`]?: IncidentAppAttributes[K] } & { [K in keyof IncidentApp & keyof IncidentAppAttributes as `prop:${K}`]?: IncidentApp[K] };
+        "incident-editor": Omit<IncidentEditor, keyof IncidentEditorAttributes> & { [K in keyof IncidentEditor & keyof IncidentEditorAttributes]?: IncidentEditor[K] } & { [K in keyof IncidentEditor & keyof IncidentEditorAttributes as `attr:${K}`]?: IncidentEditorAttributes[K] } & { [K in keyof IncidentEditor & keyof IncidentEditorAttributes as `prop:${K}`]?: IncidentEditor[K] } & OneOf<"entryId", IncidentEditor["entryId"], IncidentEditorAttributes["entryId"]>;
         "incident-list": IncidentList;
     }
 }
@@ -31,6 +107,8 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "incident-app": LocalJSX.IntrinsicElements["incident-app"] & JSXBase.HTMLAttributes<HTMLIncidentAppElement>;
+            "incident-editor": LocalJSX.IntrinsicElements["incident-editor"] & JSXBase.HTMLAttributes<HTMLIncidentEditorElement>;
             "incident-list": LocalJSX.IntrinsicElements["incident-list"] & JSXBase.HTMLAttributes<HTMLIncidentListElement>;
         }
     }

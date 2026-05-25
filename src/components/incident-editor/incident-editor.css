@@ -1,0 +1,72 @@
+:host {
+  display: block;
+  font-family: 'Inter', system-ui, sans-serif;
+  color: #111827;
+}
+
+h2 {
+  margin: 32px 0 20px;
+  font-size: 26px;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.03em;
+}
+
+.editor-card {
+  background: #ffffff;
+  border-left: 6px solid #2563eb;
+  border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+  padding: 24px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(260px, 1fr));
+  gap: 18px;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+md-filled-text-field,
+md-filled-select {
+  width: 100%;
+  --md-filled-text-field-container-color: #f8fafc;
+  --md-filled-select-text-field-container-color: #f8fafc;
+}
+
+md-divider {
+  margin: 24px 0;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.stretch-fill {
+  flex: 1;
+}
+
+#delete {
+  --md-filled-tonal-button-container-color: #fee2e2;
+  --md-filled-tonal-button-label-text-color: #991b1b;
+}
+
+#confirm {
+  --md-filled-button-container-color: #2563eb;
+  --md-filled-button-label-text-color: #ffffff;
+}
+
+@media (max-width: 800px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .actions {
+    flex-wrap: wrap;
+  }
+}

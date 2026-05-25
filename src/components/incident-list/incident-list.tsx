@@ -1,4 +1,4 @@
-import { Component, Host, h, State } from '@stencil/core';
+import { Component, Event, EventEmitter, Host, h, State } from '@stencil/core';
 
 
 @Component({
@@ -10,6 +10,8 @@ export class IncidentList {
 
   @State() incidents: any[] = [];
 
+  @Event({ eventName: 'entry-clicked' })
+  entryClicked!: EventEmitter<string>;
 
   private async getIncidentsAsync() {
     return await Promise.resolve([
@@ -67,7 +69,7 @@ export class IncidentList {
 
         <md-list>
           {this.incidents.map(incident => (
-            <md-list-item>
+            <md-list-item onClick={() => this.entryClicked.emit(incident.id)}>
               <md-icon slot="start">report</md-icon>
 
               <div slot="headline">
