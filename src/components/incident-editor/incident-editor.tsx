@@ -16,6 +16,8 @@ import '@material/web/button/outlined-button';
 export class IncidentEditor {
   @Prop() entryId!: string;
 
+  @Prop() apiBase: string = '/api';
+
   @Event({ eventName: 'editor-closed' })
   editorClosed!: EventEmitter<string>;
 

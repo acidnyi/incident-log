@@ -7,15 +7,24 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface IncidentApp {
+        "apiBase": string;
         /**
           * @default ''
          */
         "basePath": string;
     }
     interface IncidentEditor {
+        /**
+          * @default '/api'
+         */
+        "apiBase": string;
         "entryId": string;
     }
     interface IncidentList {
+        /**
+          * @default '/api'
+         */
+        "apiBase": string;
     }
 }
 export interface IncidentEditorCustomEvent<T> extends CustomEvent<T> {
@@ -77,30 +86,44 @@ declare namespace LocalJSX {
     type OneOf<K extends string, PropT, AttrT = PropT> = { [P in K]: PropT } & { [P in `attr:${K}` | `prop:${K}`]?: never } | { [P in `attr:${K}`]: AttrT } & { [P in K | `prop:${K}`]?: never } | { [P in `prop:${K}`]: PropT } & { [P in K | `attr:${K}`]?: never };
 
     interface IncidentApp {
+        "apiBase"?: string;
         /**
           * @default ''
          */
         "basePath"?: string;
     }
     interface IncidentEditor {
+        /**
+          * @default '/api'
+         */
+        "apiBase"?: string;
         "entryId": string;
         "onEditor-closed"?: (event: IncidentEditorCustomEvent<string>) => void;
     }
     interface IncidentList {
+        /**
+          * @default '/api'
+         */
+        "apiBase"?: string;
         "onEntry-clicked"?: (event: IncidentListCustomEvent<string>) => void;
     }
 
     interface IncidentAppAttributes {
         "basePath": string;
+        "apiBase": string;
     }
     interface IncidentEditorAttributes {
         "entryId": string;
+        "apiBase": string;
+    }
+    interface IncidentListAttributes {
+        "apiBase": string;
     }
 
     interface IntrinsicElements {
         "incident-app": Omit<IncidentApp, keyof IncidentAppAttributes> & { [K in keyof IncidentApp & keyof IncidentAppAttributes]?: IncidentApp[K] } & { [K in keyof IncidentApp & keyof IncidentAppAttributes as `attr:${K}`]?: IncidentAppAttributes[K] } & { [K in keyof IncidentApp & keyof IncidentAppAttributes as `prop:${K}`]?: IncidentApp[K] };
         "incident-editor": Omit<IncidentEditor, keyof IncidentEditorAttributes> & { [K in keyof IncidentEditor & keyof IncidentEditorAttributes]?: IncidentEditor[K] } & { [K in keyof IncidentEditor & keyof IncidentEditorAttributes as `attr:${K}`]?: IncidentEditorAttributes[K] } & { [K in keyof IncidentEditor & keyof IncidentEditorAttributes as `prop:${K}`]?: IncidentEditor[K] } & OneOf<"entryId", IncidentEditor["entryId"], IncidentEditorAttributes["entryId"]>;
-        "incident-list": IncidentList;
+        "incident-list": Omit<IncidentList, keyof IncidentListAttributes> & { [K in keyof IncidentList & keyof IncidentListAttributes]?: IncidentList[K] } & { [K in keyof IncidentList & keyof IncidentListAttributes as `attr:${K}`]?: IncidentListAttributes[K] } & { [K in keyof IncidentList & keyof IncidentListAttributes as `prop:${K}`]?: IncidentList[K] };
     }
 }
 export { LocalJSX as JSX };

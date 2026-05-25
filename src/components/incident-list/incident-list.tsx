@@ -1,5 +1,5 @@
-import { Component, Event, EventEmitter, Host, h, State } from '@stencil/core';
-
+import { Component, Event, EventEmitter, Host, Prop, State, h } from '@stencil/core';
+import { Configuration, IncidentLogApi, Incident } from '../../api/incident-log';
 
 @Component({
   tag: 'incident-list',
@@ -7,54 +7,37 @@ import { Component, Event, EventEmitter, Host, h, State } from '@stencil/core';
   shadow: true,
 })
 export class IncidentList {
-
-  @State() incidents: any[] = [];
-
   @Event({ eventName: 'entry-clicked' })
   entryClicked!: EventEmitter<string>;
 
-  private async getIncidentsAsync() {
-    return await Promise.resolve([
-      {
-        id: 'INC-001',
-        incidentType: 'Bezpečnostná udalosť',
-        location: 'Urgentný príjem',
-        occurredAt: new Date(),
-        description: 'Neoprávnený vstup do vyhradenej zóny.',
-        severity: 'Vysoká',
-        status: 'Nový',
-        attachments: ['kamera-zaznam.mp4'],
-        investigationReport: '',
-        notes: 'Incident čaká na preverenie.'
-      },
-      {
-        id: 'INC-002',
-        incidentType: 'Technický incident',
-        location: 'Operačná sála 2',
-        occurredAt: new Date(Date.now() - 2 * 60 * 60 * 1000),
-        description: 'Výpadok monitorovacieho zariadenia počas prípravy zákroku.',
-        severity: 'Stredná',
-        status: 'V riešení',
-        attachments: ['servisny-log.pdf'],
-        investigationReport: 'Kontaktované technické oddelenie.',
-        notes: 'Prebieha diagnostika zariadenia.'
-      },
-      {
-        id: 'INC-003',
-        incidentType: 'Pracovný úraz',
-        location: 'Laboratórium',
-        occurredAt: new Date(Date.now() - 24 * 60 * 60 * 1000),
-        description: 'Zamestnanec sa poranil pri manipulácii so sklom.',
-        severity: 'Nízka',
-        status: 'Uzatvorený',
-        attachments: [],
-        investigationReport: 'Poučenie zamestnanca bolo vykonané.',
-        notes: 'Incident bol uzatvorený.'
+  @Prop() apiBase: string = '/api';
+
+  @State() incidents: Incident[] = [];
+  @State() errorMessage?: string;
+
+  private async getIncidentsAsync(): Promise<Incident[]> {
+    try {
+      const configuration = new Configuration({
+        basePath: this.apiBase,
+      });
+
+      const incidentLogApi = new IncidentLogApi(configuration);
+      const response = await incidentLogApi.getIncidentsRaw();
+
+      if (response.raw.status < 299) {
+        return await response.value();
       }
-    ]);
+
+      this.errorMessage = `Cannot retrieve list of incidents: ${response.raw.statusText}`;
+    } catch (err: any) {
+      this.errorMessage = `Cannot retrieve list of incidents: ${err.message || 'unknown'}`;
+    }
+
+    return [];
   }
 
-  private archiveIncident(id: string) {
+  private archiveIncident(id: string, event: MouseEvent) {
+    event.stopPropagation();
     this.incidents = this.incidents.filter(incident => incident.id !== id);
   }
 
@@ -67,36 +50,40 @@ export class IncidentList {
       <Host>
         <h2>Hlásenie incidentov a bezpečnostných udalostí</h2>
 
-        <md-list>
-          {this.incidents.map(incident => (
-            <md-list-item onClick={() => this.entryClicked.emit(incident.id)}>
-              <md-icon slot="start">report</md-icon>
+        {this.errorMessage ? (
+          <div class="error">{this.errorMessage}</div>
+        ) : (
+          <md-list>
+            {this.incidents.map(incident => (
+              <md-list-item onClick={() => this.entryClicked.emit(incident.id)}>
+                <md-icon slot="start">report</md-icon>
 
-              <div slot="headline">
-                {incident.id} – {incident.incidentType}
-              </div>
+                <div slot="headline">
+                  {incident.id} – {incident.incidentType}
+                </div>
 
-              <div slot="supporting-text" class="incident-details">
-                <div><strong>Miesto:</strong> {incident.location}</div>
-                <div><strong>Dátum a čas:</strong> {incident.occurredAt.toLocaleString()}</div>
-                <div><strong>Závažnosť:</strong> {incident.severity}</div>
-                <div><strong>Stav:</strong> {incident.status}</div>
-                <div><strong>Prílohy:</strong> {incident.attachments?.join(', ') || 'Bez príloh'}</div>
-                <div><strong>Vyšetrovacia správa:</strong> {incident.investigationReport || 'Zatiaľ nedoplnené'}</div>
-                <div class="full-width"><strong>Popis udalosti:</strong> {incident.description}</div>
-                <div class="full-width"><strong>Poznámky:</strong> {incident.notes || 'Bez poznámok'}</div>
-              </div>
+                <div slot="supporting-text" class="incident-details">
+                  <div><strong>Miesto:</strong> {incident.location}</div>
+                  <div><strong>Dátum a čas:</strong> {new Date(incident.occurredAt).toLocaleString()}</div>
+                  <div><strong>Závažnosť:</strong> {incident.severity}</div>
+                  <div><strong>Stav:</strong> {incident.status}</div>
+                  <div><strong>Prílohy:</strong> {incident.attachments?.join(', ') || 'Bez príloh'}</div>
+                  <div><strong>Vyšetrovacia správa:</strong> {incident.investigationReport || 'Zatiaľ nedoplnené'}</div>
+                  <div class="full-width"><strong>Popis udalosti:</strong> {incident.description}</div>
+                  <div class="full-width"><strong>Poznámky:</strong> {incident.notes || 'Bez poznámok'}</div>
+                </div>
 
-              <md-filled-button
-                slot="end"
-                class="archive-button"
-                onClick={() => this.archiveIncident(incident.id)}
-              >
-                Archivovať
-              </md-filled-button>
-            </md-list-item>
-          ))}
-        </md-list>
+                <md-filled-button
+                  slot="end"
+                  class="archive-button"
+                  onClick={(event: MouseEvent) => this.archiveIncident(incident.id, event)}
+                >
+                  Archivovať
+                </md-filled-button>
+              </md-list-item>
+            ))}
+          </md-list>
+        )}
       </Host>
     );
   }

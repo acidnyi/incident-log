@@ -91,3 +91,11 @@ md-filled-tonal-button {
 .archive-button:hover {
   --md-filled-button-container-color: #b91c1c;
 }
+
+.error {
+  margin: auto;
+  color: red;
+  font-size: 2rem;
+  font-weight: 900;
+  text-align: center;
+}

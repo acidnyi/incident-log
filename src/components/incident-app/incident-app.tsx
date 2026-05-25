@@ -15,6 +15,7 @@ export class IncidentApp {
   @State() private relativePath = '';
 
   @Prop() basePath: string = '';
+  @Prop() apiBase: string;
 
   componentWillLoad() {
     const baseUri = new URL(this.basePath, document.baseURI || '/').pathname;
@@ -51,7 +52,7 @@ export class IncidentApp {
     const navigate = (path: string) => {
       const absolute = new URL(
         path,
-        new URL(this.basePath + '/', document.baseURI)
+        new URL(this.basePath + '/', document.baseURI),
       ).pathname;
 
       window.navigation.navigate(absolute);
@@ -62,11 +63,16 @@ export class IncidentApp {
         {element === 'editor' ? (
           <incident-editor
             entryId={entryId}
+            apiBase={this.apiBase}
             oneditor-closed={() => navigate('list')}
           ></incident-editor>
         ) : (
-          <incident-list onentry-clicked={(ev: CustomEvent<string>) => navigate("entry/" + ev.detail)}>
-          </incident-list>
+          <incident-list
+            apiBase={this.apiBase}
+            onentry-clicked={(ev: CustomEvent<string>) =>
+              navigate('entry/' + ev.detail)
+            }
+          ></incident-list>
         )}
       </Host>
     );

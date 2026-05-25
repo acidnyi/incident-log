@@ -9,6 +9,7 @@
 
 | Property               | Attribute  | Description | Type     | Default     |
 | ---------------------- | ---------- | ----------- | -------- | ----------- |
+| `apiBase`              | `api-base` |             | `string` | `'/api'`    |
 | `entryId` _(required)_ | `entry-id` |             | `string` | `undefined` |
 
 

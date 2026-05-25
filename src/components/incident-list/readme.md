@@ -5,6 +5,13 @@
 <!-- Auto Generated Below -->
 
 
+## Properties
+
+| Property  | Attribute  | Description | Type     | Default  |
+| --------- | ---------- | ----------- | -------- | -------- |
+| `apiBase` | `api-base` |             | `string` | `'/api'` |
+
+
 ## Events
 
 | Event           | Description | Type                  |
